@@ -1,0 +1,3 @@
+[submodule "Relations.generate/libs/xcodeproj"]
+	path = Relations.generate/libs/xcodeproj
+	url = https://github.com/tuist/xcodeproj.git
