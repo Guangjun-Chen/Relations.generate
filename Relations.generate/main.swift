@@ -17,16 +17,13 @@ let absolutePath = AbsolutePath(destinationPath)
 print("Generating .sql file for \(destinationPath)")
 
 if let xcodeProj = try? XcodeProj(path: absolutePath) {
-    let allBuildFile = xcodeProj.pbxproj.objects.fileReferences
-    allBuildFile.forEach { (object, fileReference) in
-        print("object \(object) file \(fileReference.reference.hashValue) \(fileReference.path)")
-        if fileReference.path == "main.swift",
-            let file = allBuildFile[object] {
-            
-            print("YES")
-        }
-    }
+    let buildFiles = xcodeProj.pbxproj.objects.buildFiles
     xcodeProj.pbxproj.objects.sourcesBuildPhases.forEach { (object, phase) in
-        print("file \(object)")
+        print("build phase \(phase.reference.hashValue)")
+        phase.fileReferences.forEach({ (objectReference) in
+            let filePath = try? buildFiles[objectReference]?.file()?.path
+            print("compile file: \(filePath)")
+        })
+//        print("path: \(try? buildFiles[phase.fileReferences[0]]?.file()?.path)")
     }
 }
